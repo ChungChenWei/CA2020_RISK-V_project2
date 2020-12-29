@@ -30,6 +30,7 @@ output             hit_o;
 // Memory
 reg      [24:0]    tag [0:15][0:1];    
 reg      [255:0]   data[0:15][0:1];
+reg                LRU [0:15];
 
 integer            i, j;
 
@@ -53,6 +54,7 @@ always@(posedge clk_i or posedge rst_i) begin
     end
     if (enable_i && write_i) begin
         // TODO: Handle your write of 2-way associative cache + LRU here
+
         // check tag -> hit
     end
 end
@@ -65,4 +67,5 @@ data_o = hit0? data[addr_i][0]:
 tag_o =  hit0? tag[addr_i][0]:
 		 hit1? tag[addr_i][1]:
 		 25'b0;
+
 endmodule
