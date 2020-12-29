@@ -59,5 +59,10 @@ end
 
 // Read Data      
 // TODO: tag_o=? data_o=? hit_o=?
-
+data_o = hit0? data[addr_i][0]:
+		 hit1? data[addr_i][1]:
+		 256'b0;
+tag_o =  hit0? tag[addr_i][0]:
+		 hit1? tag[addr_i][1]:
+		 25'b0;
 endmodule
