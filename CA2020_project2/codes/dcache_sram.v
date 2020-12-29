@@ -46,6 +46,7 @@ hit_o = hit0 or hit1;
 always@(posedge clk_i or posedge rst_i) begin
     if (rst_i) begin
         for (i=0;i<16;i=i+1) begin
+            LRU[i] <= 0;
             for (j=0;j<2;j=j+1) begin
                 tag[i][j] <= 25'b0;
                 data[i][j] <= 256'b0;
