@@ -2,13 +2,28 @@ module CPU
 (
     clk_i, 
     rst_i,
-    start_i
+    start_i,
+
+    mem_data_i,
+    mem_ack_i,
+    mem_data_o,
+    mem_addr_o,
+    mem_enable_o,
+    mem_write_o
 );
 
-// Ports
 input               clk_i;
 input               rst_i;
 input               start_i;
+
+// Port related to Data_Memory
+input   [255:0]     mem_data_i;
+input               mem_ack_i;
+
+output  [255:0]     mem_data_o;
+output  [31:0]      mem_addr_o;
+output              mem_enable_o;
+output              mem_write_o;
 
 
 Adder Add_PC1(
@@ -150,6 +165,7 @@ Hazard Hazard(
 IF_ID IF_ID(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
+    .mem_stall_i    (dcache_controller.cpu_stall_o),
     .IFID_Write_i   (~Hazard.Stall_o),
     .Flush_i        (AND.bool_o),
     .PC_i           (PC.pc_o),
@@ -160,71 +176,73 @@ IF_ID IF_ID(
 
 
 ID_EX ID_EX(
-    .clk_i      (clk_i),
-    .rst_i      (rst_i),
-    .RegWrite_i (Control.RegWrite_o),
-    .MemtoReg_i (Control.MemtoReg_o),
-    .MemRead_i  (Control.MemRead_o),
-    .MemWrite_i (Control.MemWrite_o),
-    .ALUOp_i    (Control.ALUOp_o),
-    .ALUSrc_i   (Control.ALUSrc_o),
-    .rs1_data_i (Registers.RS1data_o),
-    .rs2_data_i (Registers.RS2data_o),
-    .rs1_addr_i (IF_ID.instruc_o[19:15]),
-    .rs2_addr_i (IF_ID.instruc_o[24:20]),
-    .rd_addr_i  (IF_ID.instruc_o[11:7]),
-    .funct_i    ({IF_ID.instruc_o[31:25], IF_ID.instruc_o[14:12]}),
-    .imm_i      (Imm_Gen.imm_o),
-    .RegWrite_o (),
-    .MemtoReg_o (),
-    .MemRead_o  (),
-    .MemWrite_o (),
-    .ALUOp_o    (),
-    .ALUSrc_o   (),
-    .rs1_data_o (),
-    .rs2_data_o (),
-    .rs1_addr_o (),
-    .rs2_addr_o (),
-    .rd_addr_o  (),
-    .funct_o    (),
-    .imm_o      ()
+    .clk_i          (clk_i),
+    .rst_i          (rst_i),
+    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .RegWrite_i     (Control.RegWrite_o),
+    .MemtoReg_i     (Control.MemtoReg_o),
+    .MemRead_i      (Control.MemRead_o),
+    .MemWrite_i     (Control.MemWrite_o),
+    .ALUOp_i        (Control.ALUOp_o),
+    .ALUSrc_i       (Control.ALUSrc_o),
+    .rs1_data_i     (Registers.RS1data_o),
+    .rs2_data_i     (Registers.RS2data_o),
+    .rs1_addr_i     (IF_ID.instruc_o[19:15]),
+    .rs2_addr_i     (IF_ID.instruc_o[24:20]),
+    .rd_addr_i      (IF_ID.instruc_o[11:7]),
+    .funct_i        ({IF_ID.instruc_o[31:25], IF_ID.instruc_o[14:12]}),
+    .imm_i          (Imm_Gen.imm_o),
+    .RegWrite_o     (),
+    .MemtoReg_o     (),
+    .MemRead_o      (),
+    .MemWrite_o     (),
+    .ALUOp_o        (),
+    .ALUSrc_o       (),
+    .rs1_data_o     (),
+    .rs2_data_o     (),
+    .rs1_addr_o     (),
+    .rs2_addr_o     (),
+    .rd_addr_o      (),
+    .funct_o        (),
+    .imm_o          ()
 );
 
 
 EX_MEM EX_MEM(
-    .clk_i      (clk_i),
-    .rst_i      (rst_i),
-    .RegWrite_i (ID_EX.RegWrite_o),
-    .MemtoReg_i (ID_EX.MemtoReg_o),
-    .MemRead_i  (ID_EX.MemRead_o),
-    .MemWrite_i (ID_EX.MemWrite_o),
-    .ALUout_i   (ALU.data_o),
-    // .rs2_data_i (ID_EX.rs2_data_o),
-    .rs2_data_i (MUX_R2.data_o),
-    .rd_addr_i  (ID_EX.rd_addr_o),
-    .RegWrite_o (),
-    .MemtoReg_o (),
-    .MemRead_o  (),
-    .MemWrite_o (),
-    .ALUout_o   (),
-    .rs2_data_o (),
-    .rd_addr_o  ()
+    .clk_i          (clk_i),
+    .rst_i          (rst_i),
+    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .RegWrite_i     (ID_EX.RegWrite_o),
+    .MemtoReg_i     (ID_EX.MemtoReg_o),
+    .MemRead_i      (ID_EX.MemRead_o),
+    .MemWrite_i     (ID_EX.MemWrite_o),
+    .ALUout_i       (ALU.data_o),
+    .rs2_data_i     (MUX_R2.data_o),
+    .rd_addr_i      (ID_EX.rd_addr_o),
+    .RegWrite_o     (),
+    .MemtoReg_o     (),
+    .MemRead_o      (),
+    .MemWrite_o     (),
+    .ALUout_o       (),
+    .rs2_data_o     (),
+    .rd_addr_o      ()
 );
 
 
 MEM_WB MEM_WB(
-    .clk_i      (clk_i),
-    .rst_i      (rst_i),
-    .RegWrite_i (EX_MEM.RegWrite_o),
-    .MemtoReg_i (EX_MEM.MemtoReg_o),
-    .ALUout_i   (EX_MEM.ALUout_o),
-    .Memout_i   (Data_Memory.data_o),
-    .rd_addr_i  (EX_MEM.rd_addr_o),
-    .RegWrite_o (),
-    .MemtoReg_o (),
-    .ALUout_o   (),
-    .Memout_o   (),
-    .rd_addr_o  ()
+    .clk_i          (clk_i),
+    .rst_i          (rst_i),
+    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .RegWrite_i     (EX_MEM.RegWrite_o),
+    .MemtoReg_i     (EX_MEM.MemtoReg_o),
+    .ALUout_i       (EX_MEM.ALUout_o),
+    .Memout_i       (Data_Memory.data_o),
+    .rd_addr_i      (EX_MEM.rd_addr_o),
+    .RegWrite_o     (),
+    .MemtoReg_o     (),
+    .ALUout_o       (),
+    .Memout_o       (),
+    .rd_addr_o      ()
 );
 
 
@@ -232,6 +250,7 @@ PC PC(
     .clk_i      (clk_i),
     .rst_i      (rst_i),
     .start_i    (start_i),
+    .stall_i    (dcache_controller.cpu_stall_o),
     .PCWrite_i  (Hazard.PCWrite_o),
     .pc_i       (MUX_PC.data_o),
     .pc_o       ()
@@ -256,13 +275,21 @@ Registers Registers(
 );
 
 
-Data_Memory Data_Memory(
-    .clk_i      (clk_i),
-    .addr_i     (EX_MEM.ALUout_o),
-    .MemRead_i  (EX_MEM.MemRead_o),
-    .MemWrite_i (EX_MEM.MemWrite_o),
-    .data_i     (EX_MEM.rs2_data_o),
-    .data_o     ()
+dcache_controller dcache_controller(
+    .clk_i          (clk_i),
+    .rst_i          (rst_i),
+    .mem_data_i     (mem_data_i), 
+    .mem_ack_i      (mem_ack_i),     
+    .mem_data_o     (), 
+    .mem_addr_o     (),     
+    .mem_enable_o   (), 
+    .mem_write_o    (),
+    .cpu_data_i     (EX_MEM.rs2_data_o), 
+    .cpu_addr_i     (EX_MEM.ALUout_o),     
+    .cpu_MemRead_i  (EX_MEM.MemRead_o), 
+    .cpu_MemWrite_i (EX_MEM.MemWrite_o), 
+    .cpu_data_o     (), 
+    .cpu_stall_o    ()
 );
 
 

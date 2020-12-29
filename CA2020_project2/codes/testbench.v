@@ -22,20 +22,19 @@ parameter          num_cycles = 200;
 always #(`CYCLE_TIME/2) Clk = ~Clk;    
 
 CPU CPU(
-    .clk_i  (Clk),
-    .rst_i  (Reset),
-    .start_i(Start),
+    .clk_i          (Clk),
+    .rst_i          (Reset),
+    .start_i        (Start),
     
-    .mem_data_i(mem_cpu_data), 
-    .mem_ack_i(mem_cpu_ack),     
-    .mem_data_o(cpu_mem_data), 
-    .mem_addr_o(cpu_mem_addr),     
-    .mem_enable_o(cpu_mem_enable), 
-    .mem_write_o(cpu_mem_write)
+    .mem_data_i     (mem_cpu_data), 
+    .mem_ack_i      (mem_cpu_ack),     
+    .mem_data_o     (cpu_mem_data), 
+    .mem_addr_o     (cpu_mem_addr),     
+    .mem_enable_o   (cpu_mem_enable), 
+    .mem_write_o    (cpu_mem_write)
 );
 
-Data_Memory Data_Memory
-(
+Data_Memory Data_Memory(
     .clk_i    (Clk),
     .rst_i    (Reset),
     .addr_i   (cpu_mem_addr),
@@ -80,6 +79,38 @@ initial begin
     end
     // [RegisterInitialization] DO NOT REMOVE THIS FLAG !!!
     
+    // initialize pipeline registers
+    CPU.IF_ID.PC_o       = 32'b0;
+    CPU.IF_ID.instruc_o  = 32'b0;
+
+    CPU.ID_EX.RegWrite_o = 1'b0;
+    CPU.ID_EX.MemtoReg_o = 1'b0;
+    CPU.ID_EX.MemRead_o  = 1'b0;
+    CPU.ID_EX.MemWrite_o = 1'b0;
+    CPU.ID_EX.ALUSrc_o   = 1'b0;
+    CPU.ID_EX.ALUOp_o    = 2'b0;
+    CPU.ID_EX.rs1_addr_o = 5'b0;
+    CPU.ID_EX.rs2_addr_o = 5'b0;
+    CPU.ID_EX.rd_addr_o  = 5'b0;
+    CPU.ID_EX.funct_o    = 10'b0;
+    CPU.ID_EX.rs1_data_o = 32'b0;
+    CPU.ID_EX.rs2_data_o = 32'b0;
+    CPU.ID_EX.imm_o      = 32'b0;
+
+    CPU.EX_MEM.RegWrite_o = 1'b0;
+    CPU.EX_MEM.MemtoReg_o = 1'b0;
+    CPU.EX_MEM.MemRead_o  = 1'b0;
+    CPU.EX_MEM.MemWrite_o = 1'b0;
+    CPU.EX_MEM.rd_addr_o  = 5'b0;
+    CPU.EX_MEM.ALUout_o   = 32'b0;
+    CPU.EX_MEM.rs2_data_o = 32'b0;
+
+    CPU.MEM_WB.RegWrite_o = 1'b0;
+    CPU.MEM_WB.MemtoReg_o = 1'b0;
+    CPU.MEM_WB.rd_addr_o  = 5'b0;
+    CPU.MEM_WB.Memout_o   = 32'b0;
+    CPU.MEM_WB.ALUout_o   = 32'b0;
+
     // Load instructions into instruction memory
     // Make sure you change back to "instruction.txt" before submission
     $readmemb("instruction.txt", CPU.Instruction_Memory.memory);
