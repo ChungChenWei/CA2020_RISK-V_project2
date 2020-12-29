@@ -22,7 +22,7 @@ input    [255:0]   data_i;
 input              enable_i;
 input              write_i;
 
-output   [24:0]    tag_o;
+output   [24:0]    tag_o;     // [24] vaild [23] dirty [22:0] tag
 output   [255:0]   data_o;    // 32 Bytes = 256 bits
 output             hit_o;
 
@@ -33,6 +33,11 @@ reg      [255:0]   data[0:15][0:1];
 
 integer            i, j;
 
+wire  hit0, hit1;
+
+hit0  = tag[addr_i][0][24] && (tag[addr_i][0][22:0] == tag_i[22:0]);
+hit1  = tag[addr_i][1][24] && (tag[addr_i][1][22:0] == tag_i[22:0]);
+hit_o = hit0 or hit1;
 
 // Write Data      
 // 1. Write hit
@@ -48,12 +53,11 @@ always@(posedge clk_i or posedge rst_i) begin
     end
     if (enable_i && write_i) begin
         // TODO: Handle your write of 2-way associative cache + LRU here
+        // check tag -> hit
     end
 end
 
 // Read Data      
 // TODO: tag_o=? data_o=? hit_o=?
-tag_o  = (enable_i) ?  tag[addr_i] :  25'b0;
-data_o = (enable_i) ? data[addr_i] : 256'b0;
 
 endmodule
