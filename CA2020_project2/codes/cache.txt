@@ -1,0 +1,1 @@
+Cycle:          18, Write Miss, Address: 00000000, Write Data: 77665544

@@ -24,7 +24,7 @@ reg    [31:0]  PC_o, instruc_o;
 
 always@(posedge clk_i or posedge rst_i) begin
     // If write is set
-    if(IFID_Write_i or ~mem_stall_i) begin 
+    if(IFID_Write_i || ~mem_stall_i) begin 
         PC_o       <=  PC_i;
         instruc_o  <=  instruc_i;
     end
