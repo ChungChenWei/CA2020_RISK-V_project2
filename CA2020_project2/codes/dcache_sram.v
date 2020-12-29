@@ -7,6 +7,7 @@ module dcache_sram
     data_i,
     enable_i,
     write_i,
+
     tag_o,
     data_o,
     hit_o
@@ -22,7 +23,7 @@ input              enable_i;
 input              write_i;
 
 output   [24:0]    tag_o;
-output   [255:0]   data_o;
+output   [255:0]   data_o;    // 32 Bytes = 256 bits
 output             hit_o;
 
 
@@ -52,5 +53,7 @@ end
 
 // Read Data      
 // TODO: tag_o=? data_o=? hit_o=?
+tag_o  = (enable_i) ?  tag[addr_i] :  25'b0;
+data_o = (enable_i) ? data[addr_i] : 256'b0;
 
 endmodule
