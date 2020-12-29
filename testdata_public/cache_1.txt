@@ -1,0 +1,16 @@
+Cycle:          18, Write Miss, Address: 00000000, Write Data: 77665544
+Cycle:          31, Write Miss, Address: 00000020, Write Data: 8899aabb
+Cycle:          44, Write Hit , Address: 00000004, Write Data: 8899aabb
+Cycle:          45, Write Hit , Address: 00000024, Write Data: 77665544
+Cycle:          46, Write Hit , Address: 00000008, Write Data: 77665544
+Cycle:          47, Write Hit , Address: 00000028, Write Data: 8899aabb
+Cycle:          48, Write Hit , Address: 0000000c, Write Data: 8899aabb
+Cycle:          49, Write Hit , Address: 0000002c, Write Data: 77665544
+Cycle:          50, Write Hit , Address: 00000010, Write Data: 77665544
+Cycle:          51, Write Hit , Address: 00000030, Write Data: 8899aabb
+Cycle:          52, Write Hit , Address: 00000014, Write Data: 8899aabb
+Cycle:          53, Write Hit , Address: 00000034, Write Data: 77665544
+Cycle:          54, Write Hit , Address: 00000018, Write Data: 77665544
+Cycle:          55, Write Hit , Address: 00000038, Write Data: 8899aabb
+Cycle:          56, Write Hit , Address: 0000001c, Write Data: 8899aabb
+Cycle:          57, Write Hit , Address: 0000003c, Write Data: 77665544

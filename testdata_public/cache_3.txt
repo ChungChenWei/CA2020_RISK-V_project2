@@ -1,0 +1,48 @@
+Cycle:           3, Read Miss , Address: 00000000, Read Data : xxxxxxxx
+Cycle:          16, Read Hit  , Address: 00000004, Read Data : ccccdddd
+Cycle:          17, Read Hit  , Address: 00000008, Read Data : aaaabbbb
+Cycle:          18, Read Hit  , Address: 0000000c, Read Data : 88889999
+Cycle:          19, Read Hit  , Address: 00000010, Read Data : 66667777
+Cycle:          20, Read Hit  , Address: 00000014, Read Data : 44445555
+Cycle:          21, Read Hit  , Address: 00000018, Read Data : 22223333
+Cycle:          22, Read Hit  , Address: 0000001c, Read Data : 00001111
+Cycle:          31, Write Hit , Address: 00000000, Write Data: eeef0010
+Cycle:          32, Write Hit , Address: 00000004, Write Data: ccccddee
+Cycle:          33, Write Hit , Address: 00000008, Write Data: aaaabbcc
+Cycle:          34, Write Hit , Address: 0000000c, Write Data: 888899aa
+Cycle:          35, Write Hit , Address: 00000010, Write Data: 66667788
+Cycle:          36, Write Hit , Address: 00000014, Write Data: 44445566
+Cycle:          37, Write Hit , Address: 00000018, Write Data: 22223344
+Cycle:          38, Write Hit , Address: 0000001c, Write Data: 00001122
+Cycle:          39, Read Miss , Address: 00000020, Read Data : eeeeffff
+Cycle:          52, Read Hit  , Address: 00000024, Read Data : 33332222
+Cycle:          53, Read Hit  , Address: 00000028, Read Data : 55554444
+Cycle:          54, Read Hit  , Address: 0000002c, Read Data : 77776666
+Cycle:          55, Read Hit  , Address: 00000030, Read Data : eeeeffff
+Cycle:          57, Read Hit  , Address: 00000034, Read Data : ccccdddd
+Cycle:          58, Read Hit  , Address: 00000038, Read Data : aaaabbbb
+Cycle:          59, Read Hit  , Address: 0000003c, Read Data : 88889999
+Cycle:          78, Write Hit , Address: 00000020, Write Data: 00000000
+Cycle:          79, Write Hit , Address: 00000024, Write Data: 22222222
+Cycle:          80, Write Hit , Address: 00000028, Write Data: 00000000
+Cycle:          81, Write Hit , Address: 0000002c, Write Data: 22222222
+Cycle:          82, Write Hit , Address: 00000030, Write Data: aaaaaaaa
+Cycle:          83, Write Hit , Address: 00000034, Write Data: 88888888
+Cycle:          84, Write Hit , Address: 00000038, Write Data: aaaaaaaa
+Cycle:          85, Write Hit , Address: 0000003c, Write Data: 88888888
+Cycle:          94, Write Miss, Address: 00000400, Write Data: eeef0021
+Cycle:         107, Write Hit , Address: 00000404, Write Data: ccccddff
+Cycle:         108, Write Hit , Address: 00000408, Write Data: aaaabbdd
+Cycle:         109, Write Hit , Address: 0000040c, Write Data: 888899bb
+Cycle:         110, Write Hit , Address: 00000410, Write Data: 66667799
+Cycle:         111, Write Hit , Address: 00000414, Write Data: 44445577
+Cycle:         112, Write Hit , Address: 00000418, Write Data: 22223355
+Cycle:         113, Write Hit , Address: 0000041c, Write Data: 00001133
+Cycle:         114, Write Miss, Address: 00000200, Write Data: 00000000 (Write Back!)
+Cycle:         137, Write Hit , Address: 00000204, Write Data: 22222222
+Cycle:         138, Write Hit , Address: 00000208, Write Data: 00000000
+Cycle:         139, Write Hit , Address: 0000020c, Write Data: 22222222
+Cycle:         140, Write Hit , Address: 00000210, Write Data: aaaaaaaa
+Cycle:         141, Write Hit , Address: 00000214, Write Data: 88888888
+Cycle:         142, Write Hit , Address: 00000218, Write Data: aaaaaaaa
+Cycle:         143, Write Hit , Address: 0000021c, Write Data: 88888888
