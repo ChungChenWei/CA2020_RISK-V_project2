@@ -165,7 +165,7 @@ Hazard Hazard(
 IF_ID IF_ID(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
-    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .mem_stall_i    (dcache.cpu_stall_o),
     .IFID_Write_i   (~Hazard.Stall_o),
     .Flush_i        (AND.bool_o),
     .PC_i           (PC.pc_o),
@@ -178,7 +178,7 @@ IF_ID IF_ID(
 ID_EX ID_EX(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
-    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .mem_stall_i    (dcache.cpu_stall_o),
     .RegWrite_i     (Control.RegWrite_o),
     .MemtoReg_i     (Control.MemtoReg_o),
     .MemRead_i      (Control.MemRead_o),
@@ -211,7 +211,7 @@ ID_EX ID_EX(
 EX_MEM EX_MEM(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
-    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .mem_stall_i    (dcache.cpu_stall_o),
     .RegWrite_i     (ID_EX.RegWrite_o),
     .MemtoReg_i     (ID_EX.MemtoReg_o),
     .MemRead_i      (ID_EX.MemRead_o),
@@ -232,11 +232,11 @@ EX_MEM EX_MEM(
 MEM_WB MEM_WB(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
-    .mem_stall_i    (dcache_controller.cpu_stall_o),
+    .mem_stall_i    (dcache.cpu_stall_o),
     .RegWrite_i     (EX_MEM.RegWrite_o),
     .MemtoReg_i     (EX_MEM.MemtoReg_o),
     .ALUout_i       (EX_MEM.ALUout_o),
-    .Memout_i       (Data_Memory.data_o),
+    .Memout_i       (dcache.cpu_data_o),
     .rd_addr_i      (EX_MEM.rd_addr_o),
     .RegWrite_o     (),
     .MemtoReg_o     (),
@@ -250,7 +250,7 @@ PC PC(
     .clk_i      (clk_i),
     .rst_i      (rst_i),
     .start_i    (start_i),
-    .stall_i    (dcache_controller.cpu_stall_o),
+    .stall_i    (dcache.cpu_stall_o),
     .PCWrite_i  (Hazard.PCWrite_o),
     .pc_i       (MUX_PC.data_o),
     .pc_o       ()
@@ -275,7 +275,7 @@ Registers Registers(
 );
 
 
-dcache_controller dcache_controller(
+dcache_controller dcache(
     .clk_i          (clk_i),
     .rst_i          (rst_i),
     .mem_data_i     (mem_data_i), 

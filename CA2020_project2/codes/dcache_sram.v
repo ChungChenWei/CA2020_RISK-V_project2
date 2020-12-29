@@ -36,9 +36,9 @@ integer            i, j;
 
 wire  hit0, hit1;
 
-hit0  = tag[addr_i][0][24] && (tag[addr_i][0][22:0] == tag_i[22:0]);
-hit1  = tag[addr_i][1][24] && (tag[addr_i][1][22:0] == tag_i[22:0]);
-hit_o = hit0 or hit1;
+assign hit0  = tag[addr_i][0][24] && (tag[addr_i][0][22:0] == tag_i[22:0]);
+assign hit1  = tag[addr_i][1][24] && (tag[addr_i][1][22:0] == tag_i[22:0]);
+assign hit_o = hit0 || hit1;
 
 // Write Data      
 // 1. Write hit
@@ -61,16 +61,19 @@ always@(posedge clk_i or posedge rst_i) begin
             tag[addr_i][0][23] <= 1;
             tag[addr_i][0][24] <= 1;
             LRU[addr_i] <= 1;
+        end
         else if (hit1) begin
             data[addr_i][1] <= data_i;
             tag[addr_i][1][23] <= 1;
             tag[addr_i][1][24] <= 1;
             LRU[addr_i] <= 0;
+        end
         else begin
             if (LRU[addr_i]) begin
                 data[addr_i][0] <= data_i;
                 tag[addr_i][0][23] <= 1;
                 tag[addr_i][0][24] <= 1;
+            end
             else begin
                 data[addr_i][1] <= data_i;
                 tag[addr_i][1][23] <= 1;
@@ -78,16 +81,15 @@ always@(posedge clk_i or posedge rst_i) begin
             end
             LRU[addr_i] <= ~LRU[addr_i];
         end
-        end
     end
 end
 
 // Read Data      
 // TODO: tag_o=? data_o=? hit_o=?
-data_o = hit0? data[addr_i][0]:
-		 hit1? data[addr_i][1]:
-		 data[addr_i][LRU[addr_i]];
-tag_o =  hit0? tag[addr_i][0]:
-		 hit1? tag[addr_i][1]:
-		 tag[addr_i][LRU[addr_i]];
+assign data_o = hit0? data[addr_i][0]:
+		        hit1? data[addr_i][1]:
+		        data[addr_i][LRU[addr_i]];
+assign tag_o =  hit0? tag[addr_i][0]:
+		        hit1? tag[addr_i][1]:
+		        tag[addr_i][LRU[addr_i]];
 endmodule

@@ -40,7 +40,7 @@ reg     [4:0]  rd_addr_o;
 
 always@(posedge clk_i or posedge rst_i) begin
     // use all non-blocking
-    if(~rst_i or ~mem_stall_i) begin
+    if(~rst_i || ~mem_stall_i) begin
         RegWrite_o  <=  RegWrite_i;
         MemtoReg_o  <=  MemtoReg_i;
         MemRead_o   <=  MemRead_i;
