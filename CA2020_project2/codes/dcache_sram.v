@@ -35,6 +35,7 @@ reg                LRU [0:15];
 integer            i, j;
 
 wire  hit0, hit1;
+wire [24:0] tag_addri_1;
 
 assign hit0  = tag[addr_i][0][24] && (tag[addr_i][0][22:0] == tag_i[22:0]);
 assign hit1  = tag[addr_i][1][24] && (tag[addr_i][1][22:0] == tag_i[22:0]);
