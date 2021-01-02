@@ -57,30 +57,20 @@ always@(posedge clk_i or posedge rst_i) begin
         // TODO: Handle your write of 2-way associative cache + LRU here
         // check tag -> hit
         if (hit0) begin
-            data[addr_i][0] <= data_i;
+            data[addr_i][0]    <= data_i;
             tag[addr_i][0][23] <= 1;
             tag[addr_i][0][24] <= 1;
-            LRU[addr_i] <= 1;
+            LRU[addr_i]        <= 1;
         end
         else if (hit1) begin
-            data[addr_i][1] <= data_i;
+            data[addr_i][1]    <= data_i;
             tag[addr_i][1][23] <= 1;
             tag[addr_i][1][24] <= 1;
-            LRU[addr_i] <= 0;
+            LRU[addr_i]        <= 0;
         end
         else begin
-            if (LRU[addr_i]) begin
-                data[addr_i][1] <= data_i;
-                tag[addr_i][1] <= tag_i;
-                tag[addr_i][1][23] <= 1;
-                tag[addr_i][1][24] <= 1;
-            end
-            else begin
-                data[addr_i][0] <= data_i;
-                tag[addr_i][0] <= tag_i;
-                tag[addr_i][0][23] <= 1;
-                tag[addr_i][0][24] <= 1;
-            end
+            data[addr_i][LRU[addr_i]] <= data_i;
+            tag[addr_i][LRU[addr_i]]  <= tag_i;
             LRU[addr_i] <= ~LRU[addr_i];
         end
     end
